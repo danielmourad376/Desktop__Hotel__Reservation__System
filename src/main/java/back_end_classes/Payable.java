@@ -1,5 +1,5 @@
 package back_end_classes;
-import back_end_classes.exception.*;
+import exception.*;
 
 public interface Payable {
     double getTotalAmount();

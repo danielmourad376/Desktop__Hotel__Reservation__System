@@ -2,7 +2,7 @@ package back_end_classes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import back_end_classes.exception.*;
+import exception.*;
 
 public class Guest extends User{
     //data Fields
