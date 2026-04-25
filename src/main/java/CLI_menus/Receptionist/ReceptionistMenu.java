@@ -15,7 +15,8 @@ public class ReceptionistMenu {
             System.out.println("3. View All Guests");
             System.out.println("4. Check-In Guest");
             System.out.println("5. Check-Out Guest");
-            System.out.println("6. Logout");
+            System.out.println("6. Confirm a Pending Reservation");
+            System.out.println("7. Logout");
             System.out.print("Select an option: ");
 
             String choice = input.nextLine();
@@ -88,6 +89,20 @@ public class ReceptionistMenu {
                     break;
 
                     case "6":
+                        ViewData.printAllReservations(receptionist);
+
+                        System.out.println("please enter the pending reservation ID to confirm: ");
+                        int pendingReservation = Integer.parseInt(input.nextLine());
+                        Reservation pendingRes = HotelDatabaseSearch.findReservationById(pendingReservation);
+
+                        if (pendingRes == null) {
+                            throw new IllegalArgumentException("Reservation #" + pendingReservation + " not found.");
+                        }
+
+                        pendingRes.confirmReservation();
+                        break;
+
+                    case "7":
                         loggedIn = false;
                         System.out.println("Logging out...");
                     break;
