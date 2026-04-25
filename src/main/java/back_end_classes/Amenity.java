@@ -16,6 +16,11 @@ public class Amenity {
         setType(type);
     }
 
+    @Override
+    public String toString() {
+        return getName() + " (" + getType() + " Amenity) - $" + getPricePerDay() + "/day";
+    }
+
     //getters and setters
     public String getAmenityId() {return amenityId;}
 

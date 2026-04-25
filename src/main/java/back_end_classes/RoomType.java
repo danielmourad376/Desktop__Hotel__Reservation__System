@@ -19,6 +19,12 @@ public class RoomType {
         setMaxOccupancy(maxOccupancy);
     }
 
+    @Override
+    public String toString() {
+        return getName() + " (" + getTypeId() + ") - " + getDescription() +
+                " | Max Occupancy: " + getMaxOccupancy() + " | Base Price: $" + getBasePrice();
+    }
+
     //getters and setters
     public String getTypeId() { return typeId; }
 

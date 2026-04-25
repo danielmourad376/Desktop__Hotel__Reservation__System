@@ -48,6 +48,8 @@ public class Receptionist extends Staff {
 
         System.out.println("Front Desk Check-out successful. Guest " + res.getGuest().getUsername()
                 + " has left Room " + res.getRoom().getRoomNumber() + ".");
+
+        finalInvoice.generateInvoice();
     }
 
 

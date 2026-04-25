@@ -25,7 +25,7 @@ public class Invoice implements Payable {
 
     // Methods
     public void generateInvoice() {
-        System.out.println("Invoice generated for amount: $" + totalAmount);
+        System.out.println(this.toString());
     }
 
     @Override
@@ -73,16 +73,16 @@ public class Invoice implements Payable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("========== INVOICE #").append(invoiceId).append(" ==========\n");
-        sb.append("Issue Date : ").append(issueDate).append("\n");
+        sb.append("========== INVOICE #").append(getInvoiceId()).append(" ==========\n");
+        sb.append("Issue Date : ").append(getIssueDate()).append("\n");
         sb.append("-------------------------------------------\n");
 
-        sb.append("  ").append(reservation.toString()).append("\n");
+        sb.append("  ").append(getReservation().toString()).append("\n");
         sb.append("-------------------------------------------\n");
-        sb.append("TOTAL      : $").append(totalAmount).append("\n");
-        sb.append("STATUS     : ").append(paid ? "PAID" : "UNPAID").append("\n");
+        sb.append("TOTAL      : $").append(getTotalAmount()).append("\n");
+        sb.append("STATUS     : ").append(isPaid() ? "PAID" : "UNPAID").append("\n");
         if (paid) {
-            sb.append("PAID VIA   : ").append(paymentMethod).append(" on ").append(paymentDate).append("\n");
+            sb.append("PAID VIA   : ").append(getPaymentMethod()).append(" on ").append(getPaymentDate()).append("\n");
         }
         sb.append("===========================================");
 

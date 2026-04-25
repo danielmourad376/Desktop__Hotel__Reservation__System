@@ -88,6 +88,9 @@ public class Guest extends User{
             for (int i = 0; i < available.size(); i++) {
                 Room r = available.get(i);
                 System.out.println("Room " + r.getRoomNumber() + " | Type: " + r.getRoomType().getName() + " | Price/Night: $" + r.calculatePrice());
+
+                System.out.println("   Included Amenities: " + r.getAmenities());
+                System.out.println("--------------------------------------------------");
             }
         }
     }
@@ -131,6 +134,7 @@ public class Guest extends User{
         Invoice inv = targetRes.processCheckout(method);
         System.out.println("Checkout complete. Safe travels! Your Invoice ID is #" + inv.getInvoiceId());
 
+        inv.generateInvoice();
 
     }
 

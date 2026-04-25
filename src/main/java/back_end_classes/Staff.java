@@ -19,6 +19,12 @@ public abstract class Staff extends User{
     //abstract method for Milestone 2
     public abstract void performDuties();
 
+    @Override
+    public String toString() {
+        return "Staff Profile: " + getUsername() + " | Role: " + getRole() +
+                " | DOB: " + getDateOfBirth() + " | Hours/Week: " + getWorkingHours();
+    }
+
     //viewing Methods
     public ArrayList<Guest> viewAllGuests(){
         return HotelDatabase.getInstance().getGuests();
