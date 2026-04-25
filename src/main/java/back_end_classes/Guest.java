@@ -2,7 +2,7 @@ package back_end_classes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import com.desktop_hotel_reservation_system.exception.*;
+import back_end_classes.exception.*;
 
 public class Guest extends User{
     //data Fields

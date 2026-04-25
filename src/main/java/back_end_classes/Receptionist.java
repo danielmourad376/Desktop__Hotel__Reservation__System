@@ -1,7 +1,7 @@
 package back_end_classes;
 
 import java.time.LocalDate;
-import com.desktop_hotel_reservation_system.exception.*;
+import back_end_classes.exception.*;
 
 public class Receptionist extends Staff {
 
