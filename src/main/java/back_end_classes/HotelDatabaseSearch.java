@@ -112,7 +112,7 @@ public final class HotelDatabaseSearch {
             Reservation res = allRes.get(i);
 
             if (res.getRoom().getRoomNumber() == room.getRoomNumber() && res.getStatus() != ReservationStatus.CANCELLED) {
-                // The Golden Overlap Formula
+
                 boolean overlaps = reqIn.isBefore(res.getCheckOutDate()) && reqOut.isAfter(res.getCheckInDate());
                 if (overlaps) {
                     return false;
