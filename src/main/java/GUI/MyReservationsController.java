@@ -22,7 +22,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TableRow;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 
 import java.util.ArrayList;
@@ -41,9 +40,11 @@ public class MyReservationsController {
     @FXML private TableColumn<Reservation, String> colStatus;
 
     @FXML private Button cancelButton;
+    private GuestController parentController;
 
-    public void setGuestSession(Guest guest) {
+    public void setGuestSession(Guest guest, GuestController parent) {
         this.currentGuest = guest;
+        this.parentController = parent;
         loadReservations(); // Load data once the session is set
     }
 
@@ -92,8 +93,8 @@ public class MyReservationsController {
                 }
             });
 
-            //enter key (release) listener on the specific row of the table
-            reservationsTable.setOnKeyReleased(event -> {
+            // Enter key listener
+            reservationsTable.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {
                     Reservation selected = reservationsTable.getSelectionModel().getSelectedItem();
                     if (selected != null) {
@@ -101,7 +102,6 @@ public class MyReservationsController {
                     }
                 }
             });
-
             return row;
         });
     }
@@ -166,6 +166,19 @@ public class MyReservationsController {
                 //call backend logic
                 currentGuest.checkoutAndPay(selected.getReservationId(), method);
 
+                if (parentController != null) {
+                    parentController.refreshTopBar();
+                }
+
+                String invoiceText = String.format(
+                        "--- DIGITAL RECEIPT ---\n" +
+                                "Reservation #: %d\n" +
+                                "Total Paid: $%.2f via %s\n\n" +
+                                "Thank you for choosing PrimeStay Hotel. Safe travels!",
+                        selected.getReservationId(), selected.calculateTotal(), method
+                );
+
+                showAlert(Alert.AlertType.INFORMATION, "Checkout Successful", invoiceText);
                 //update the GUI to reflect the COMPLETED status
                 reservationsTable.refresh();
                 cancelButton.setDisable(true); // Reset cancel button state

@@ -12,10 +12,10 @@ public class Guest extends User{
     private String roomPreferences;
 
     //constructors
-    public Guest(String username, String password, LocalDate dOb, Gender gender, Double balance, String address){
+    public Guest(String username, String password, LocalDate dOb, Gender gender, double balance, String address){
         this(username, password, dOb, gender, balance, address, "None");
     }
-    public Guest(String username, String password, LocalDate dOb, Gender gender, Double balance, String address, String roomPreferences) {
+    public Guest(String username, String password, LocalDate dOb, Gender gender, double balance, String address, String roomPreferences) {
         super(username, password, dOb);
 
         setGender(gender);
@@ -148,9 +148,7 @@ public class Guest extends User{
 
 
 
-    public void setBalance(Double balance) {
-        if (balance == null)
-            throw new IllegalArgumentException("Balance cannot be empty.");
+    public void setBalance(double balance) {
         if (balance <= 0)
             throw new IllegalArgumentException("Balance must be positive.");
         this.balance = balance;

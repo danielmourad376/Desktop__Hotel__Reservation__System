@@ -23,21 +23,24 @@ public class Amenity {
 
     //getters and setters
     public String getAmenityId() {return amenityId;}
-
+    public String getType(){return type;}
     public String getName(){ return name;}
+    public double getPricePerDay() {return pricePerDay;}
+
+
+
     public void setName(String name) {
         if (name == null || name.trim().isEmpty())
             throw new IllegalArgumentException("Amenity name cannot be empty.");
         this.name = name.trim();
     }
 
-    public double getPricePerDay() {return pricePerDay;}
     public void setPricePerDay(double price) {
         if (price < 0)
             throw new IllegalArgumentException("Amenity price cannot be negative.");
         this.pricePerDay = price;
     }
-    public String getType(){return type;}
+
     public void setType(String type) {
         if (type == null || type.trim().isEmpty())
             throw new IllegalArgumentException("Amenity type cannot be empty.");

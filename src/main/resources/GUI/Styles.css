@@ -61,8 +61,10 @@
 }
 
 .nav-bar {
-    -fx-background-color: #2c3e50;
+    -fx-background-color: #243443;
     -fx-padding: 15 20 15 20;
+    -fx-border-color: transparent transparent #1a2530 transparent;
+    -fx-border-width: 0 0 1 0;
 }
 
 .nav-bar-title {
@@ -80,20 +82,23 @@
 
 .sidebar {
     -fx-background-color: #2c3e50;
-    -fx-padding: 15;
+    -fx-padding: 20 12 15 12;
+    -fx-border-color: transparent #1a2530 transparent transparent;
+    -fx-border-width: 0 1 0 0;
 }
 
 .sidebar-menu-label {
-    -fx-text-fill: #B0B8C8;
+    -fx-text-fill: #8a95a8;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
+    -fx-padding: 0 0 0 8;
     -fx-font-family: "Times New Roman";
 }
 
 .nav-button {
     -fx-font-family: "Times New Roman";
-    -fx-background-color: #2b3a4a;
-    -fx-text-fill: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: #d0d8e0;
     -fx-font-size: 13px;
     -fx-alignment: CENTER-LEFT;
     -fx-padding: 10 15 10 15;
@@ -102,6 +107,7 @@
 }
 .nav-button:hover {
     -fx-background-color: #384b5e;
+    -fx-text-fill: white;
 }
 .nav-button:pressed {
     -fx-background-color: #1e2833;
@@ -186,4 +192,72 @@
 .custom-table .table-cell {
     -fx-alignment: CENTER-LEFT;
     -fx-padding: 8px;
+}
+
+
+
+.nav-button-gold {
+    -fx-font-family: "Times New Roman";
+    -fx-background-color: #b38b36;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 10 15 10 15;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+}
+.nav-button-gold:hover {
+    -fx-background-color: #c79e40;
+}
+.nav-button-gold:pressed {
+    -fx-background-color: #8c6a25;
+}
+
+
+
+/*receptionist menu*/
+.sidebar-menu-label-centered {
+    -fx-text-fill: #8a95a8;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-font-family: "Times New Roman";
+}
+
+.nav-button-receptionist {
+    -fx-font-family: "Times New Roman";
+    -fx-background-color: transparent;
+    -fx-text-fill: #d0d8e0;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+    -fx-padding: 10 15 10 15;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+}
+
+.nav-button-receptionist:hover {
+    -fx-background-color: #384b5e;
+    -fx-text-fill: white;
+}
+
+.nav-button-receptionist:pressed, .nav-button-receptionist:focused {
+    -fx-background-color: #9b7625;
+    -fx-text-fill: white;
+}
+
+.logout-button-centered {
+    -fx-background-color: #A0272A;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-padding: 10 15 10 15;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+}
+.logout-button-centered:hover {
+    -fx-background-color: #C0392B;
+}
+.logout-button-centered:pressed {
+    -fx-background-color: #862124;
 }

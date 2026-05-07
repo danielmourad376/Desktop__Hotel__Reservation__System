@@ -40,9 +40,11 @@ public class RegisterController {
             String address = addressField.getText().trim();
             String balanceText = balanceField.getText().trim();
 
-            /// if the String value of balance (balanceText) is empty, return null,
-            ///  otherwise convert to Double wrapper since double cannot accept null data
-            Double balance = balanceText.isEmpty() ? null : Double.valueOf(balanceText);
+            if (balanceText.isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Missing Data", "balance cannot be empty.");
+                return;
+            }
+            double balance = Double.parseDouble(balanceText);
 
             Guest newGuest = new Guest(uname, pass, dob, selectedGender, balance, address);
             newGuest.register();

@@ -29,15 +29,19 @@ public abstract class User {
 
     //getters and setters
     public String getUsername() { return username; }
-    public void setUsername(String username) {
+    public String getPassword() { return password; }
+    public LocalDate getDateOfBirth() { return dateOfBirth; }
+
+
+
+    public final void setUsername(String username) {
         if (username == null || username.trim().isEmpty()){
             throw new IllegalArgumentException("Username cannot be empty.");
         }
         this.username = username.trim();
     }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) {
+    public final void setPassword(String password) {
         if (password == null || password.isEmpty()){
             throw new IllegalArgumentException("Password cannot be empty.");
         }
@@ -49,8 +53,8 @@ public abstract class User {
         }
         this.password = password;
     }
-    public LocalDate getDateOfBirth() { return dateOfBirth; }
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+
+    public final void setDateOfBirth(LocalDate dateOfBirth) {
         if (dateOfBirth == null){
             throw new IllegalArgumentException("Date of birth cannot be null.");}
         if (dateOfBirth.isAfter(LocalDate.now())){

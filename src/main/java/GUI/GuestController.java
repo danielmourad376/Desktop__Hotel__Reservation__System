@@ -47,7 +47,7 @@ public class GuestController{
             if (controller instanceof AvailableRoomsController) { //checks if the generic obj "controller" is of said controller class
                 ((AvailableRoomsController) controller).setGuestSession(currentGuest);
             } else if (controller instanceof MyReservationsController) {
-                ((MyReservationsController) controller).setGuestSession(currentGuest);
+                ((MyReservationsController) controller).setGuestSession(currentGuest, this);
             } else if (controller instanceof ManageWalletController) {
                 //pass the guest AND the GuestController to refresh the top bar if balance changes
                 ((ManageWalletController) controller).setGuestSession(currentGuest, this);

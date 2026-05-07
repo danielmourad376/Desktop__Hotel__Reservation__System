@@ -91,6 +91,8 @@ public class HotelDatabase {
         //Bob has a CONFIRMED reservation starting next month and ending in 3 days
         Reservation res2 = new Reservation(guest2, room201, LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(1).plusDays(3));
         res2.setStatus(ReservationStatus.CONFIRMED);
+        room201.setAvailable(false);
+
         reservations.add(res1);
         reservations.add(res2);
     }

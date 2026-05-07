@@ -44,9 +44,9 @@ public abstract class Staff extends User{
 
     //getters & setters
     public Role getRole(){return role;}
-
     public int getWorkingHours(){return workingHours;}
-    public void setWorkingHours(int workingHours) {
+
+    public final void setWorkingHours(int workingHours) {
         if (workingHours <= 0){
             throw new IllegalArgumentException("Working hours must be greater than zero.");}
         if (workingHours > 60){
