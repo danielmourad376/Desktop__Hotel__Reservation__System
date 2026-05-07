@@ -22,7 +22,6 @@ public final class HotelDatabaseSearch {
 
     public static User findUserByUsername(String username) {
         ArrayList<Staff> staffMembers = HotelDatabase.getInstance().getStaffMembers();
-        ArrayList<Guest> guests = HotelDatabase.getInstance().getGuests();
         for (int i = 0; i < staffMembers.size(); i++) {
             Staff s = staffMembers.get(i);
             if (s.getUsername().equals(username)) {
@@ -30,13 +29,14 @@ public final class HotelDatabaseSearch {
             }
         }
 
+        ArrayList<Guest> guests = HotelDatabase.getInstance().getGuests();
         for (int i = 0; i < guests.size(); i++) {
             Guest g = guests.get(i);
             if (g.getUsername().equals(username)) {
                 return g;
             }
         }
-        return null; // Guest not found
+        return null;
     }
 
     public static ArrayList<Room> findAvailableRooms() {

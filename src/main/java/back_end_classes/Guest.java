@@ -6,21 +6,19 @@ import exception.*;
 
 public class Guest extends User{
     //data Fields
-    private double balance;
-    private final Gender gender;
+    private Double balance;
+    private Gender gender;
     private String address;
     private String roomPreferences;
 
     //constructors
-    public Guest(String username, String password, LocalDate dOb, Gender gender, double balance, String address){
+    public Guest(String username, String password, LocalDate dOb, Gender gender, Double balance, String address){
         this(username, password, dOb, gender, balance, address, "None");
     }
-    public Guest(String username, String password, LocalDate dOb, Gender gender, double balance, String address, String roomPreferences) {
+    public Guest(String username, String password, LocalDate dOb, Gender gender, Double balance, String address, String roomPreferences) {
         super(username, password, dOb);
 
-        if (gender == null)
-            throw new IllegalArgumentException("Gender cannot be null.");
-        this.gender = gender;
+        setGender(gender);
         setBalance(balance);
         setAddress(address);
         setRoomPreferences(roomPreferences);
@@ -28,6 +26,10 @@ public class Guest extends User{
 
     //methods
     public void register(){
+        if (HotelDatabaseSearch.findUserByUsername(this.getUsername()) != null) {
+            throw new IllegalArgumentException("Username '" + this.getUsername() + "' is already taken.");
+        }
+
         HotelDatabase.getInstance().addGuest(this);
         System.out.println("Guest " + this.getUsername() + " registered successfully.");
     }
@@ -113,7 +115,7 @@ public class Guest extends User{
         }
     }
 
-    //online payment method so user doesn't have to go to receptionist's desk to check out (cant use cash payment method)
+    //online payment method so user doesn't have to go to receptionist's desk to check out (can't use cash payment method)
     public void checkoutAndPay(int resId, PaymentMethod method) throws
             UnauthorizedActionException, InvalidPaymentException, InvalidCheckOutException {
 
@@ -140,28 +142,34 @@ public class Guest extends User{
 
     //getters and setters
     public double getBalance() { return balance; }
-    public void setBalance(double balance) {
-        if (balance < 0)
-            throw new IllegalArgumentException("Balance cannot be negative.");
+    public String getRoomPreferences(){return roomPreferences;}
+    public Gender getGender(){return gender;}
+    public String getAddress(){return address;}
+
+
+
+    public void setBalance(Double balance) {
+        if (balance == null)
+            throw new IllegalArgumentException("Balance cannot be empty.");
+        if (balance <= 0)
+            throw new IllegalArgumentException("Balance must be positive.");
         this.balance = balance;
     }
+    public void setGender(Gender gender){
+        if (gender == null)
+            throw new IllegalArgumentException("Gender cannot be null.");
+        this.gender = gender;
+    }
 
-    public Gender getGender(){return gender;}
-
-    public String getAddress(){return address;}
     public void setAddress(String address) {
         if (address == null || address.trim().isEmpty())
             throw new IllegalArgumentException("Address cannot be empty.");
         this.address = address.trim();
     }
 
-    public String getRoomPreferences(){return roomPreferences;}
     public void setRoomPreferences(String roomPreferences) {
         if (roomPreferences == null)
             throw new IllegalArgumentException("Room preferences cannot be null.");
         this.roomPreferences = roomPreferences;
     }
-
-
-
 }

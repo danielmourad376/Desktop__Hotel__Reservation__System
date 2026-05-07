@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="300" prefWidth="400" spacing="20" style="-fx-background-color: #2c3e50;" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ReserveConfirmController">
+    <padding>
+        <Insets bottom="30" left="30" right="30" top="30" />
+    </padding>
+
+    <Label style="-fx-text-fill: white;" styleClass="content-welcome-title" text="Confirm Reservation" />
+
+    <Label fx:id="roomInfoLabel" styleClass="content-welcome-subtitle" text="Room #101 — Standard — $120/night" wrapText="true" />
+
+    <DatePicker fx:id="checkInDate" maxWidth="Infinity" promptText="Check-in Date" />
+    <DatePicker fx:id="checkOutDate" maxWidth="Infinity" promptText="Check-out Date" />
+
+    <Label fx:id="totalCostLabel" style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Total: $0.00" />
+
+    <HBox alignment="CENTER" spacing="15">
+        <Button defaultButton="true" onAction="#handleConfirm" prefHeight="38" prefWidth="150" styleClass="primary-red-button" text="Confirm" />
+        <Button cancelButton="true" onAction="#handleCancel" prefHeight="38" prefWidth="150" styleClass="secondary-button" text="Cancel" />
+    </HBox>
+
+</VBox>

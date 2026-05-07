@@ -36,7 +36,7 @@ public class HotelDatabase {
         }
         return instance;
     }
-//class methods
+    //class methods
     private void loadDummyData() {
         //create room types and add them to the arrayList of roomTypes
         RoomType single = new RoomType( "Single", 100.0, "Cozy single room", 1);
@@ -85,11 +85,11 @@ public class HotelDatabase {
         guests.add(guest1);
         guests.add(guest2);
 
-        //Alice has a PENDING reservation starting tomorrow and ending in 5 days
-        Reservation res1 = new Reservation(guest1, room101, LocalDate.now().plusDays(1), LocalDate.now().plusDays(5));
+        //Alice has a PENDING reservation starting next month and ending in 5 days
+        Reservation res1 = new Reservation(guest1, room101, LocalDate.now().plusMonths(1).plusDays(1), LocalDate.now().plusMonths(1).plusDays(5));
 
-        //Bob has a CONFIRMED reservation starting today and ending in 3 days
-        Reservation res2 = new Reservation(guest2, room201, LocalDate.now(), LocalDate.now().plusDays(3));
+        //Bob has a CONFIRMED reservation starting next month and ending in 3 days
+        Reservation res2 = new Reservation(guest2, room201, LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(1).plusDays(3));
         res2.setStatus(ReservationStatus.CONFIRMED);
         reservations.add(res1);
         reservations.add(res2);
@@ -113,6 +113,12 @@ public class HotelDatabase {
 
 
     //getters (gets a copy of database current state)
+    /**
+     * retrieves a shallow copy of the requested database list.
+     * returns a new ArrayList containing references to the original.
+     * modifying the arrayLists using the ArrayList library's methods will not affect the database, it affects these shallow copies.
+     * it is still allowed to modify the objects themselves in the arrayLists using setters from other classes.
+     **/
     public ArrayList<Room> getRooms() { return new ArrayList<>(rooms); }
     public ArrayList<Guest> getGuests() { return new ArrayList<>(guests); }
     public ArrayList<RoomType> getRoomTypes() { return new ArrayList<>(roomTypes); }

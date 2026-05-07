@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.EditProfileController">
+    <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-padding: 30;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <VBox alignment="CENTER_LEFT" maxWidth="600.0" prefWidth="600.0">
+            <Label styleClass="content-welcome-title" text="Edit Profile" />
+            <Label styleClass="content-welcome-subtitle" text="Update your personal information and preferences." />
+        </VBox>
+
+        <VBox maxWidth="600.0" spacing="20.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+
+            <GridPane hgap="15.0" vgap="15.0">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" minWidth="120.0" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+
+                <Label style="-fx-font-family: 'Times New Roman'; -fx-text-fill: #2c3e50;" text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="usernameField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label style="-fx-font-family: 'Times New Roman'; -fx-text-fill: #2c3e50;" text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <PasswordField fx:id="passwordField" styleClass="password-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label style="-fx-font-family: 'Times New Roman'; -fx-text-fill: #2c3e50;" text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <DatePicker fx:id="dobPicker" maxWidth="Infinity" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label style="-fx-font-family: 'Times New Roman'; -fx-text-fill: #2c3e50;" text="Gender:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <ComboBox fx:id="genderComboBox" maxWidth="Infinity" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label style="-fx-font-family: 'Times New Roman'; -fx-text-fill: #2c3e50;" text="Home Address:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <TextField fx:id="addressField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                <Label style="-fx-font-family: 'Times New Roman'; -fx-text-fill: #2c3e50;" text="Room Preferences:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <TextField fx:id="preferencesField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
+
+            <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                <Button mnemonicParsing="false" onAction="#handleReset" styleClass="secondary-button" text="Discard Changes" />
+                <Button mnemonicParsing="false" onAction="#handleSave" styleClass="primary-red-button" text="Save Profile" />
+            </HBox>
+        </VBox>
+    </VBox>
+</AnchorPane>

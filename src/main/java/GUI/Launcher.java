@@ -1,4 +1,5 @@
-package com.example.hotelreservationsystem;
+package GUI;
+
 
 import javafx.application.Application;
 

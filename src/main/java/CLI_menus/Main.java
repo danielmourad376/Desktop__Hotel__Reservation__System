@@ -28,7 +28,7 @@ public class Main {
 
             String choice = input.nextLine();
             /// nextLine() is used instead of nextInt() here to prevent a leftover newline
-            ///Scanner bug, and to prevent the program from crashing if the user types a letter.
+            ///Scanner bug and to prevent the program from crashing if the user types a letter.
 
             switch (choice) {
                 case "1":

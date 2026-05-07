@@ -41,6 +41,12 @@ public abstract class User {
         if (password == null || password.isEmpty()){
             throw new IllegalArgumentException("Password cannot be empty.");
         }
+        if (password.contains(" ")) {
+            throw new IllegalArgumentException("Password cannot contain spaces.");
+        }
+        if (password.length() < 6) {
+            throw new IllegalArgumentException("Password must be at least 6 characters long.");
+        }
         this.password = password;
     }
     public LocalDate getDateOfBirth() { return dateOfBirth; }
