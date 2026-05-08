@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 
@@ -82,18 +83,36 @@ public class ManageReservationsController {
     }
 
     private void loadTableData() {
-        ArrayList<Reservation> allRes = HotelDatabase.getInstance().getReservations();
-        ArrayList<Reservation> activeReservations = new ArrayList<>();
+        class Task implements Runnable {
+            @Override
+            public void run() {
+                ArrayList<Reservation> allRes = HotelDatabase.getInstance().getReservations();
+                ArrayList<Reservation> activeReservations = new ArrayList<>();
 
-        for (int i = 0; i < allRes.size(); i++) {
-            Reservation res = allRes.get(i);
-            if (res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.CONFIRMED) {
-                activeReservations.add(res);
+                for (int i = 0; i < allRes.size(); i++) {
+                    Reservation res = allRes.get(i);
+                    if (res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.CONFIRMED) {
+                        activeReservations.add(res);
+                    }
+                }
+
+                ObservableList<Reservation> data = FXCollections.observableArrayList(activeReservations);
+
+                class UIUpdateTask implements Runnable {
+                    @Override
+                    public void run() {
+                        allReservationsTable.setItems(data);
+                    }
+                }
+
+                UIUpdateTask uiTask = new UIUpdateTask();
+                Platform.runLater(uiTask);
             }
         }
 
-        ObservableList<Reservation> data = FXCollections.observableArrayList(activeReservations);
-        allReservationsTable.setItems(data);
+        Task task = new Task();
+        Thread t = new Thread(task);
+        t.start();
     }
 
     @FXML

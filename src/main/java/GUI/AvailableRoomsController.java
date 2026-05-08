@@ -20,6 +20,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyCode;
 import javafx.util.Callback;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -146,9 +147,27 @@ public class AvailableRoomsController {
     }
 
     private void loadAvailableRooms() {
-        //fetch data from utility class and send to the TableView
-        ArrayList<Room> available = HotelDatabaseSearch.findAvailableRooms();
-        ObservableList<Room> roomData = FXCollections.observableArrayList(available);
-        roomsTable.setItems(roomData);
+        class DataLoaderTask implements Runnable {
+            @Override
+            public void run() {
+                //fetch data from utility class and send to the TableView
+                ArrayList<Room> available = HotelDatabaseSearch.findAvailableRooms();
+                ObservableList<Room> roomData = FXCollections.observableArrayList(available);
+
+                class UIUpdateTask implements Runnable {
+                    @Override
+                    public void run() {
+                        roomsTable.setItems(roomData);
+                    }
+                }
+
+                UIUpdateTask uiTask = new UIUpdateTask();
+                Platform.runLater(uiTask);
+            }
+        }
+
+        DataLoaderTask task = new DataLoaderTask();
+        Thread t = new Thread(task);
+        t.start();
     }
 }

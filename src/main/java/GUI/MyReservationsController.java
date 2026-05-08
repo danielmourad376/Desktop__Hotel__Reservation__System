@@ -25,6 +25,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.util.Callback;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import static GUI.RegisterController.showAlert;
@@ -122,19 +123,37 @@ public class MyReservationsController {
     }
     private void loadReservations() {
         if (currentGuest != null) {
-            ArrayList<Reservation> history = HotelDatabaseSearch.findReservationsByGuestUsername(currentGuest.getUsername());
+            class Task implements Runnable {
+                @Override
+                public void run() {
+                    ArrayList<Reservation> history = HotelDatabaseSearch.findReservationsByGuestUsername(currentGuest.getUsername());
 
-            //filter the list to only show active reservations
-            ArrayList<Reservation> activeReservations = new ArrayList<>();
-            for (int i = 0; i < history.size(); i++) {
-                Reservation res = history.get(i);
-                if (res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.CONFIRMED) {
-                    activeReservations.add(res);
+                    //filter the list to only show active reservations
+                    ArrayList<Reservation> activeReservations = new ArrayList<>();
+                    for (int i = 0; i < history.size(); i++) {
+                        Reservation res = history.get(i);
+                        if (res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.CONFIRMED) {
+                            activeReservations.add(res);
+                        }
+                    }
+
+                    ObservableList<Reservation> resData = FXCollections.observableArrayList(activeReservations);
+
+                    class UIUpdateTask implements Runnable {
+                        @Override
+                        public void run() {
+                            reservationsTable.setItems(resData);
+                        }
+                    }
+
+                    UIUpdateTask uiTask = new UIUpdateTask();
+                    Platform.runLater(uiTask);
                 }
             }
 
-            ObservableList<Reservation> resData = FXCollections.observableArrayList(activeReservations);
-            reservationsTable.setItems(resData);
+            Task task = new Task();
+            Thread t = new Thread(task);
+            t.start();
         }
     }
 
