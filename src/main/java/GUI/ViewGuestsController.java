@@ -3,11 +3,14 @@ package GUI;
 import back_end_classes.Guest;
 import back_end_classes.HotelDatabase;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 public class ViewGuestsController {
 
@@ -20,11 +23,17 @@ public class ViewGuestsController {
 
     @FXML
     public void initialize() {
-        colUsername.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsername()));
-        colDOB.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateOfBirth().toString()));
-        colGender.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGender().toString()));
-        colAddress.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAddress()));
-        colBalance.setCellValueFactory(cellData -> new SimpleStringProperty(String.format("$%.2f", cellData.getValue().getBalance())));
+        colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colDOB.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+        colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+        colBalance.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Guest, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Guest, String> param) {
+                return new SimpleStringProperty(String.format("$%.2f", param.getValue().getBalance()));
+            }
+        });
 
         ObservableList<Guest> data = FXCollections.observableArrayList(HotelDatabase.getInstance().getGuests());
         guestsTable.setItems(data);

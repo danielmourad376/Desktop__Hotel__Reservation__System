@@ -6,11 +6,14 @@ import exception.InvalidCheckOutException;
 import exception.InvalidPaymentException;
 import exception.InvalidReservationStateException;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 
@@ -28,21 +31,34 @@ public class ManageReservationsController {
     @FXML private Button checkInBtn;
     @FXML private Button checkOutBtn;
 
-    private Receptionist currentReceptionist;
+    private Staff currentStaff;
 
     // Receives the session data from the ReceptionistController
-    public void setSession(Receptionist receptionist) {
-        this.currentReceptionist = receptionist;
+    public void setSession(Staff staff) {
+        this.currentStaff = staff;
     }
 
     @FXML
     public void initialize() {
-        colResId.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReservationId())));
-        colGuest.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGuest().getUsername()));
-        colRoomNum.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getRoom().getRoomNumber())));
-        colCheckIn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCheckInDate().toString()));
-        colCheckOut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCheckOutDate().toString()));
-        colStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
+        colResId.setCellValueFactory(new PropertyValueFactory<>("reservationId"));
+
+        colGuest.setCellValueFactory(new Callback<>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Reservation, String> param) {
+                return new SimpleStringProperty(param.getValue().getGuest().getUsername());
+            }
+        });
+
+        colRoomNum.setCellValueFactory(new Callback<>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Reservation, String> param) {
+                return new SimpleStringProperty(String.valueOf(param.getValue().getRoom().getRoomNumber()));
+            }
+        });
+
+        colCheckIn.setCellValueFactory(new PropertyValueFactory<>("checkInDate"));
+        colCheckOut.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         confirmBtn.setDisable(true);
         checkInBtn.setDisable(true);
@@ -69,7 +85,8 @@ public class ManageReservationsController {
         ArrayList<Reservation> allRes = HotelDatabase.getInstance().getReservations();
         ArrayList<Reservation> activeReservations = new ArrayList<>();
 
-        for (Reservation res : allRes) {
+        for (int i = 0; i < allRes.size(); i++) {
+            Reservation res = allRes.get(i);
             if (res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.CONFIRMED) {
                 activeReservations.add(res);
             }
@@ -102,9 +119,15 @@ public class ManageReservationsController {
     private void handleCheckIn(ActionEvent event) {
         Reservation selected = allReservationsTable.getSelectionModel().getSelectedItem();
 
-        if (selected != null && currentReceptionist != null) {
+        if (selected != null && currentStaff != null) {
             try {
-                currentReceptionist.checkIn(selected.getReservationId());
+                if (currentStaff instanceof Receptionist) {
+                    //downcast the staff object to a receptionist object
+                    ((Receptionist) currentStaff).checkIn(selected.getReservationId());
+                } else {
+                    //admin sets the room availability to false directly
+                    selected.getRoom().setAvailable(false);
+                }
                 allReservationsTable.refresh();
 
                 RegisterController.showAlert(Alert.AlertType.INFORMATION, "Check-In Successful",
@@ -121,7 +144,7 @@ public class ManageReservationsController {
     private void handleCheckOut(ActionEvent event) {
         Reservation selected = allReservationsTable.getSelectionModel().getSelectedItem();
 
-        if (selected != null && currentReceptionist != null) {
+        if (selected != null && currentStaff != null) {
 
             ChoiceDialog<PaymentMethod> dialog = new ChoiceDialog<>(PaymentMethod.CREDIT_CARD, PaymentMethod.CREDIT_CARD, PaymentMethod.CASH);
             dialog.setTitle("Front Desk Check-Out");
@@ -130,7 +153,13 @@ public class ManageReservationsController {
 
             dialog.showAndWait().ifPresent(method -> {
                 try {
-                    currentReceptionist.checkOut(selected.getReservationId(), method);
+                    if (currentStaff instanceof Receptionist) {
+                        //downcast the staff object to a receptionist object
+                        ((Receptionist) currentStaff).checkOut(selected.getReservationId(), method);
+                    } else {
+                        // Admin handles checkout directly through the reservation object
+                        selected.processCheckout(method);
+                    }
                     allReservationsTable.refresh();
 
                     String invoiceText = String.format(

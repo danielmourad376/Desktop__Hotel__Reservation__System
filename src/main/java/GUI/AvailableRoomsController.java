@@ -4,6 +4,7 @@ import back_end_classes.Guest;
 import back_end_classes.HotelDatabaseSearch;
 import back_end_classes.Room;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,9 +15,11 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyCode;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,28 +42,38 @@ public class AvailableRoomsController {
     @FXML
     public void initialize() {
 
-        colRoomNumber.setCellValueFactory(cellData ->
-                new SimpleStringProperty(String.valueOf(cellData.getValue().getRoomNumber())));
+        colRoomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
 
-        colRoomType.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getRoomType().getName()));
-
-        colPrice.setCellValueFactory(cellData ->
-                new SimpleStringProperty(String.format("$%.2f", cellData.getValue().calculatePrice())));
-
-
-        colAmenities.setCellValueFactory(cellData -> {
-            ArrayList<back_end_classes.Amenity> amList = cellData.getValue().getAmenities();
-            if (amList.isEmpty()) return new SimpleStringProperty("None");
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < amList.size(); i++) {
-                back_end_classes.Amenity a = amList.get(i);
-
-                sb.append("• ").append(a.getName()).append(" (").append(a.getType()).append(") - $").append(a.getPricePerDay()).append("/day");
-                if (i < amList.size() - 1) sb.append("\n"); // Add line break
+        colRoomType.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Room, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Room, String> param) {
+                return new SimpleStringProperty(param.getValue().getRoomType().getName());
             }
-            return new SimpleStringProperty(sb.toString());
+        });
+
+        colPrice.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Room, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Room, String> param) {
+                return new SimpleStringProperty(String.format("$%.2f", param.getValue().calculatePrice()));
+            }
+        });
+
+
+        colAmenities.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Room, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Room, String> param) {
+                ArrayList<back_end_classes.Amenity> amList = param.getValue().getAmenities();
+                if (amList.isEmpty()) return new SimpleStringProperty("None");
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < amList.size(); i++) {
+                    back_end_classes.Amenity a = amList.get(i);
+
+                    sb.append("• ").append(a.getName()).append(" (").append(a.getType()).append(") - $").append(a.getPricePerDay()).append("/day");
+                    if (i < amList.size() - 1) sb.append("\n"); // Add line break
+                }
+                return new SimpleStringProperty(sb.toString());
+            }
         });
 
 

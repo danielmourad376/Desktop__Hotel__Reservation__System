@@ -11,6 +11,7 @@ import exception.InvalidCheckOutException;
 import exception.InvalidPaymentException;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,8 +22,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 import static GUI.RegisterController.showAlert;
@@ -51,23 +53,27 @@ public class MyReservationsController {
     @FXML
     public void initialize() {
         // Map backend Reservation data to Table columns
-        colResId.setCellValueFactory(cellData ->
-                new SimpleStringProperty(String.valueOf(cellData.getValue().getReservationId())));
+        colResId.setCellValueFactory(new PropertyValueFactory<>("reservationId"));
 
-        colRoomNum.setCellValueFactory(cellData ->
-                new SimpleStringProperty(String.valueOf(cellData.getValue().getRoom().getRoomNumber())));
+        colRoomNum.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Reservation, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Reservation, String> param) {
+                return new SimpleStringProperty(String.valueOf(param.getValue().getRoom().getRoomNumber()));
+            }
+        });
 
-        colCheckIn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getCheckInDate().toString()));
+        colCheckIn.setCellValueFactory(new PropertyValueFactory<>("checkInDate"));
 
-        colCheckOut.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getCheckOutDate().toString()));
+        colCheckOut.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
 
-        colTotal.setCellValueFactory(cellData ->
-                new SimpleStringProperty(String.format("$%.2f", cellData.getValue().calculateTotal())));
+        colTotal.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Reservation, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Reservation, String> param) {
+                return new SimpleStringProperty(String.format("$%.2f", param.getValue().calculateTotal()));
+            }
+        });
 
-        colStatus.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getStatus().toString()));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Disable cancel button if nothing is selected
         cancelButton.setDisable(true);
@@ -120,7 +126,8 @@ public class MyReservationsController {
 
             //filter the list to only show active reservations
             ArrayList<Reservation> activeReservations = new ArrayList<>();
-            for (Reservation res : history) {
+            for (int i = 0; i < history.size(); i++) {
+                Reservation res = history.get(i);
                 if (res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.CONFIRMED) {
                     activeReservations.add(res);
                 }

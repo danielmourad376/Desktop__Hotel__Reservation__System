@@ -17,7 +17,7 @@ public class HotelDatabase {
     private final ArrayList<Reservation> reservations;
     private final ArrayList<Staff> staffMembers;
 
-    // 3. Private Constructor
+    //Private Constructor
     private HotelDatabase() {
         guests = new ArrayList<>();
         rooms = new ArrayList<>();
@@ -74,8 +74,8 @@ public class HotelDatabase {
 
 
         //create staff members and add them to the arrayList of staffMembers
-        Admin masterAdmin = new Admin("admin1", "Admin123" ,LocalDate.of(1990,1, 1), 40);
-        Receptionist masterReceptionist = new Receptionist("reception1", "Recp123", LocalDate.of(1995, 1, 1), 35);
+        Admin masterAdmin = new Admin("admin1", "admin123" ,LocalDate.of(1990,1, 1), 40);
+        Receptionist masterReceptionist = new Receptionist("reception1", "recp123", LocalDate.of(1995, 1, 1), 35);
         staffMembers.add(masterAdmin);
         staffMembers.add(masterReceptionist);
 

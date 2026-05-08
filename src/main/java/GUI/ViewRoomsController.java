@@ -3,11 +3,14 @@ package GUI;
 import back_end_classes.HotelDatabase;
 import back_end_classes.Room;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 public class ViewRoomsController {
 
@@ -20,13 +23,36 @@ public class ViewRoomsController {
 
     @FXML
     public void initialize() {
-        colRoomNum.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getRoomNumber())));
-        colType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRoomType().getName()));
-        colPrice.setCellValueFactory(cellData -> new SimpleStringProperty(String.format("$%.2f", cellData.getValue().getRoomType().getBasePrice())));
-        colMaxOcc.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getRoomType().getMaxOccupancy())));
+        colRoomNum.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+
+        colType.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Room, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Room, String> param) {
+                return new SimpleStringProperty(param.getValue().getRoomType().getName());
+            }
+        });
+
+        colPrice.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Room, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Room, String> param) {
+                return new SimpleStringProperty(String.format("$%.2f", param.getValue().getRoomType().getBasePrice()));
+            }
+        });
+
+        colMaxOcc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Room, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Room, String> param) {
+                return new SimpleStringProperty(String.valueOf(param.getValue().getRoomType().getMaxOccupancy()));
+            }
+        });
 
         // Convert boolean to readable text
-        colStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isAvailable() ? "Available" : "Occupied"));
+        colStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Room, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Room, String> param) {
+                return new SimpleStringProperty(param.getValue().isAvailable() ? "Available" : "Occupied");
+            }
+        });
 
         ObservableList<Room> data = FXCollections.observableArrayList(HotelDatabase.getInstance().getRooms());
         roomsTable.setItems(data);

@@ -54,6 +54,7 @@ public class Admin extends Staff{
             System.out.println("Added new Amenity: " + newAmenity.getName() + " to database.");
     }
 
+    //console method; won't be used for GUI
     public void addAmenityToRoom(int targetRoomNumber, String targetAmenityId) {
         Room addToRoom = HotelDatabaseSearch.findRoomByNumber(targetRoomNumber);
         if (addToRoom == null) {

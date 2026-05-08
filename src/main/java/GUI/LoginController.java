@@ -43,9 +43,12 @@ public class LoginController {
                 GuestController controller = loader.getController();
                 controller.setSession((Guest) foundUser);
 
-            } else if (foundUser instanceof Staff) {
-
-
+            } else if (foundUser instanceof Admin) {
+                loader = new FXMLLoader(getClass().getResource("AdminMenu.fxml"));
+                root = loader.load();
+                AdminController controller = loader.getController();
+                controller.setSession((Admin) foundUser);
+            } else if (foundUser instanceof Receptionist) {
                 loader = new FXMLLoader(getClass().getResource("ReceptionistMenu.fxml"));
                 root = loader.load();
 
