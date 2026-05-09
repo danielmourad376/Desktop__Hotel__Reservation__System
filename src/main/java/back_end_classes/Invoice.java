@@ -70,6 +70,11 @@ public class Invoice implements Payable {
 
     public LocalDate getIssueDate() { return issueDate; }
 
+    //setter
+    public static void setIdCounter(int newCount) {
+        invoiceCounter = newCount;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

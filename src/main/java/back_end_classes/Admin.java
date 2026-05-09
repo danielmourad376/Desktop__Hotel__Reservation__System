@@ -83,6 +83,7 @@ public class Admin extends Staff{
         roomToUpdate.setRoomType(newRoomType);
         roomToUpdate.setAmenities(newAmenities);
         roomToUpdate.setAvailable(newIsAvailable);
+        DatabaseHelper.updateRoom(roomToUpdate);
         System.out.println("Room no: " + targetRoomNumber + " fully updated.");
     }
     public void updateRoomType(String typeId, String name, double basePrice, String description, int maxOccupancy){
@@ -96,6 +97,7 @@ public class Admin extends Staff{
             typeToUpdate.setBasePrice(basePrice);
             typeToUpdate.setDescription(description);
             typeToUpdate.setMaxOccupancy(maxOccupancy);
+            DatabaseHelper.updateRoomType(typeToUpdate);
             System.out.println("Room Type " + typeId + " fully updated.");
     }
     public void updateAmenity(String targetId, String name, double price, String type){
@@ -108,6 +110,7 @@ public class Admin extends Staff{
             a.setName(name);
             a.setPricePerDay(price);
             a.setType(type);
+            DatabaseHelper.updateAmenity(a);
             System.out.println("Amenity " + targetId + " fully updated.");
     }
 

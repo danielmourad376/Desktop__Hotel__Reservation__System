@@ -1,6 +1,5 @@
 package back_end_classes;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class HotelDatabase {
@@ -17,6 +16,8 @@ public class HotelDatabase {
     private final ArrayList<Reservation> reservations;
     private final ArrayList<Staff> staffMembers;
 
+    //
+    private boolean isLoading = false;
     //Private Constructor
     private HotelDatabase() {
         guests = new ArrayList<>();
@@ -26,7 +27,6 @@ public class HotelDatabase {
         invoices = new ArrayList<>();
         reservations = new ArrayList<>();
         staffMembers = new ArrayList<>();
-        loadDummyData();
     }
 
     //instance getter method
@@ -37,81 +37,91 @@ public class HotelDatabase {
         return instance;
     }
     //class methods
-    private void loadDummyData() {
-        //create room types and add them to the arrayList of roomTypes
-        RoomType single = new RoomType( "Single", 100.0, "Cozy single room", 1);
-        RoomType doubleRoom = new RoomType( "Double", 150.0, "Spacious double room", 2);
-        RoomType suite = new RoomType("Suite", 300.0, "Luxury suite", 4);
-        roomTypes.add(single);
-        roomTypes.add(doubleRoom);
-        roomTypes.add(suite);
-
-        //create amenities and add them to the arrayList of amenities
-        Amenity wifi = new Amenity("WIFI", 10, "Hotel");
-        Amenity tv = new Amenity("TV", 5, "Room");
-        Amenity miniFridge = new Amenity("Mini Fridge", 15, "Room");
-        amenities.add(wifi);
-        amenities.add(tv);
-        amenities.add(miniFridge);
 
 
-        //create rooms and add them to the arrayList of rooms
-        Room room101 = new Room(101, single);
-        Room room102 = new Room( 102, single);
-        Room room201 = new Room( 201, doubleRoom);
-
-        //calls to add amenities to the rooms just created
-        room101.addAmenity(wifi);
-        room102.addAmenity(wifi);
-
-        room201.addAmenity(wifi);
-        room201.addAmenity(tv);
-        room201.addAmenity(miniFridge);
-
-        rooms.add(room101);
-        rooms.add(room102);
-        rooms.add(room201);
-
-
-        //create staff members and add them to the arrayList of staffMembers
-        Admin masterAdmin = new Admin("admin1", "admin123" ,LocalDate.of(1990,1, 1), 40);
-        Receptionist masterReceptionist = new Receptionist("reception1", "recp123", LocalDate.of(1995, 1, 1), 35);
-        staffMembers.add(masterAdmin);
-        staffMembers.add(masterReceptionist);
-
-        //create guests and add them to the arrayList of guests
-        Guest guest1 = new Guest("Alice", "pass123", LocalDate.of(1990, 5, 10), Gender.FEMALE, 500.0, "123 Main St");
-        Guest guest2 = new Guest("Bob", "pass456", LocalDate.of(1988, 3, 15), Gender.MALE, 200.65, "456 Elm St");
-        guests.add(guest1);
-        guests.add(guest2);
-
-        //Alice has a PENDING reservation starting next month and ending in 5 days
-        Reservation res1 = new Reservation(guest1, room101, LocalDate.now().plusMonths(1).plusDays(1), LocalDate.now().plusMonths(1).plusDays(5));
-
-        //Bob has a CONFIRMED reservation starting next month and ending in 3 days
-        Reservation res2 = new Reservation(guest2, room201, LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(1).plusDays(3));
-        res2.setStatus(ReservationStatus.CONFIRMED);
-        room201.setAvailable(false);
-
-        reservations.add(res1);
-        reservations.add(res2);
+    public void setLoading(boolean loading) {
+        this.isLoading = loading;
     }
 
-
     //add or remove methods to edit the database
-    public void addInvoice(Invoice inv) {if (inv != null) invoices.add(inv);}
-    public void addReservation(Reservation res) {if (res != null) reservations.add(res);}
-    public void addRoom(Room r) { if (r != null) rooms.add(r); }
-    public void removeRoom(Room r) { if (r != null) rooms.remove(r); }
+    public void addInvoice(Invoice inv) {
+        if (inv != null) {
+            invoices.add(inv);
+            if (!isLoading) {
+                DatabaseHelper.insertInvoice(inv);
+            }
+        }
+    }
+    public void addReservation(Reservation res) {
+        if (res != null) {
+            reservations.add(res);
+            if (!isLoading) {
+                DatabaseHelper.insertReservation(res);
+            }
+        }
+    }
 
-    public void addRoomType(RoomType rt) { if (rt != null) roomTypes.add(rt); }
-    public void removeRoomType(RoomType rt) { if (rt != null) roomTypes.remove(rt); }
+    public void addRoom(Room r) {
+        if (r != null) {
+            rooms.add(r);
+            if (!isLoading) {
+                DatabaseHelper.insertRoom(r);
+            }
+        }
+    }
+    public void removeRoom(Room r) {
+        if (r != null) {
+            rooms.remove(r);
+        DatabaseHelper.deleteRoom(r.getRoomNumber());
+    }
+    }
 
-    public void addAmenity(Amenity a) { if (a != null) amenities.add(a); }
-    public void removeAmenity(Amenity a) { if (a != null) amenities.remove(a); }
+    public void addRoomType(RoomType rt) {
+        if (rt != null) {
+            roomTypes.add(rt);
+            if (!isLoading) {
+                DatabaseHelper.insertRoomType(rt);
+            }
+        }
+    }
+    public void removeRoomType(RoomType rt) {
+        if (rt != null) {
+            roomTypes.remove(rt);
+        DatabaseHelper.deleteRoomType(rt.getTypeId());
+        }
+    }
 
-    public void addStaffMember(Staff s) { if (s != null) staffMembers.add(s); }
-    public void addGuest(Guest g) { if (g != null) guests.add(g); }
+    public void addAmenity(Amenity a) {
+        if (a != null) {
+            amenities.add(a);
+            if (!isLoading) {
+                DatabaseHelper.insertAmenity(a);
+            }
+        }
+    }
+    public void removeAmenity(Amenity a) {
+        if (a != null) {
+            amenities.remove(a);
+            DatabaseHelper.deleteAmenity(a.getAmenityId());
+        }
+    }
+
+    public void addStaffMember(Staff s) {
+        if (s != null) {
+            staffMembers.add(s);
+            if (!isLoading) {
+                DatabaseHelper.insertStaff(s); // Only saves if NOT loading (prevents error during starting the application)
+            }
+        }
+    }
+    public void addGuest(Guest g) {
+        if (g != null) {
+            guests.add(g);
+            if (!isLoading) {
+                DatabaseHelper.insertGuest(g);
+            }
+        }
+    }
 
 
     //getters (gets a copy of database current state)

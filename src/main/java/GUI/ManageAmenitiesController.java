@@ -29,8 +29,11 @@ public class ManageAmenitiesController {
     @FXML private Button updateBtn;
     @FXML private Button deleteBtn;
 
-    public void setSession(Admin admin) {
+    private AdminController parentController;
+
+    public void setSession(Admin admin, AdminController parent) {
         this.currentAdmin = admin;
+        this.parentController = parent;
     }
 
     @FXML

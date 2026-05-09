@@ -55,4 +55,8 @@ public class RoomType {
             throw new IllegalArgumentException("Max occupancy must be at least 1.");
         this.maxOccupancy = maxOccupancy;
     }
+
+    public static void setIdCounter(int newCount) {
+        idCounter = newCount;
+    }
 }

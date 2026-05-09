@@ -33,10 +33,15 @@ public class ManageReservationsController {
     @FXML private Button checkOutBtn;
 
     private Staff currentStaff;
+    private AdminController parentController;
 
     // Receives the session data from the ReceptionistController
     public void setSession(Staff staff) {
         this.currentStaff = staff;
+    }
+    public void setSession(Staff staff, AdminController parent) {
+        this.currentStaff = staff;
+        this.parentController = parent;
     }
 
     @FXML
@@ -181,6 +186,9 @@ public class ManageReservationsController {
                     }
                     allReservationsTable.refresh();
 
+                    if (parentController != null) {
+                        parentController.updateStats();
+                    }
                     String invoiceText = String.format(
                             "--- FINAL INVOICE ---\n" +
                                     "Reservation #: %d\n" +

@@ -140,6 +140,10 @@ public class Reservation {
         this.room = room;
     }
 
+    public static void setIdCounter(int newCount) {
+        idCounter = newCount;
+    }
+
     @Override
     public String toString() {
         return "Reservation #" + reservationId +

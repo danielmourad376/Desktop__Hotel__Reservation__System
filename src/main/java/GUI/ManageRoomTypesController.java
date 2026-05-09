@@ -31,8 +31,11 @@ public class ManageRoomTypesController {
     @FXML private Button updateBtn;
     @FXML private Button deleteBtn;
 
-    public void setSession(Admin admin) {
+    private AdminController parentController;
+
+    public void setSession(Admin admin, AdminController parent) {
         this.currentAdmin = admin;
+        this.parentController = parent;
     }
 
     @FXML
@@ -95,6 +98,9 @@ public class ManageRoomTypesController {
 
             loadTableData();
             handleClear(null);
+            if (parentController != null) {
+                parentController.updateStats();
+            }
             RegisterController.showAlert(Alert.AlertType.INFORMATION, "Success", "Room Type added to database.");
 
         } catch (NumberFormatException e) {
@@ -148,6 +154,9 @@ public class ManageRoomTypesController {
 
                 loadTableData();
                 handleClear(null);
+                if (parentController != null) {
+                    parentController.updateStats();
+                }
                 RegisterController.showAlert(Alert.AlertType.INFORMATION, "Success", "Room Type deleted from database.");
             } catch (IllegalArgumentException e) {
                 RegisterController.showAlert(Alert.AlertType.WARNING, "Delete Failed", e.getMessage());

@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class ManageStaffController {
 
     private Admin currentAdmin;
+    private AdminController parentController;
 
     @FXML private TableView<Staff> staffTable;
     @FXML private TableColumn<Staff, String> colUsername;
@@ -28,8 +29,9 @@ public class ManageStaffController {
     @FXML private ComboBox<Role> roleBox;
     @FXML private TextField hoursField;
 
-    public void setSession(Admin admin) {
+    public void setSession(Admin admin, AdminController parent) {
         this.currentAdmin = admin;
+        this.parentController = parent;
     }
 
     @FXML

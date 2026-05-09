@@ -60,6 +60,8 @@ public class Guest extends User{
             throw new UnauthorizedActionException("You do not have permission to cancel Reservation #" + reservationId);
         }
         res.cancel();
+        DatabaseHelper.updateReservation(res);
+        DatabaseHelper.updateRoom(res.getRoom());
     }
 
     public void addBalance(double amount) {
@@ -67,6 +69,7 @@ public class Guest extends User{
             throw new IllegalArgumentException("Validation Error: Cannot add a negative or zero amount.");
         }
             this.balance += amount;
+            DatabaseHelper.updateGuest(this);
             System.out.println("Successfully added $" + amount + " to wallet. New balance: $" + this.balance);
 
     }
@@ -134,6 +137,10 @@ public class Guest extends User{
         }
 
         Invoice inv = targetRes.processCheckout(method);
+
+        DatabaseHelper.updateReservation(targetRes);
+        DatabaseHelper.updateRoom(targetRes.getRoom());
+        DatabaseHelper.updateGuest(this);
         System.out.println("Checkout complete. Safe travels! Your Invoice ID is #" + inv.getInvoiceId());
 
         inv.generateInvoice();

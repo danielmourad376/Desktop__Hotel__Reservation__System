@@ -69,6 +69,7 @@ public class EditProfileController {
                 parentController.refreshTopBar();
             }
 
+            DatabaseHelper.updateGuest(currentGuest);
             RegisterController.showAlert(Alert.AlertType.INFORMATION, "Success", "Profile updated successfully!");
 
         } catch (IllegalArgumentException e) {

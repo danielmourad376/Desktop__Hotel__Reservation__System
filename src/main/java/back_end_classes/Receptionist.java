@@ -33,6 +33,7 @@ public class Receptionist extends Staff {
             }
 
         res.getRoom().setAvailable(false);
+        DatabaseHelper.updateRoom(res.getRoom());
         System.out.println("Check-in successful. Guest " + res.getGuest().getUsername()
                 + " is now in Room " + res.getRoom().getRoomNumber() + ".");
     }
@@ -45,6 +46,10 @@ public class Receptionist extends Staff {
         }
         //receptionist generates invoice at desk
         Invoice finalInvoice = res.processCheckout(method);
+
+        DatabaseHelper.updateReservation(res);
+        DatabaseHelper.updateRoom(res.getRoom());
+        DatabaseHelper.updateGuest(res.getGuest());
 
         System.out.println("Front Desk Check-out successful. Guest " + res.getGuest().getUsername()
                 + " has left Room " + res.getRoom().getRoomNumber() + ".");

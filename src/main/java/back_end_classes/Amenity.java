@@ -46,4 +46,8 @@ public class Amenity {
             throw new IllegalArgumentException("Amenity type cannot be empty.");
         this.type = type.trim();
     }
+
+    public static void setIdCounter(int newCount) {
+        idCounter = newCount;
+    }
 }

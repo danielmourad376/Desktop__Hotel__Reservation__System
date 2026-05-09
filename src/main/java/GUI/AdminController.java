@@ -67,15 +67,15 @@ public class AdminController {
 
             Object controller = loader.getController();
             if (controller instanceof ManageStaffController) {
-                ((ManageStaffController) controller).setSession(currentAdmin);
+                ((ManageStaffController) controller).setSession(currentAdmin, this);
             }else if (controller instanceof ManageRoomTypesController) {
-                ((ManageRoomTypesController) controller).setSession(currentAdmin);
+                ((ManageRoomTypesController) controller).setSession(currentAdmin, this);
             } else if (controller instanceof ManageAmenitiesController) {
-                ((ManageAmenitiesController) controller).setSession(currentAdmin);
+                ((ManageAmenitiesController) controller).setSession(currentAdmin, this);
             }else if (controller instanceof ManageRoomsController) {
-                ((ManageRoomsController) controller).setSession(currentAdmin);
+                ((ManageRoomsController) controller).setSession(currentAdmin, this);
             }else if (controller instanceof ManageReservationsController) {
-                ((ManageReservationsController) controller).setSession(currentAdmin);
+                ((ManageReservationsController) controller).setSession(currentAdmin, this);
             }
 
         } catch (IOException e) {

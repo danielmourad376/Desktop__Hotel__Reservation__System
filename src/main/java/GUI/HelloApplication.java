@@ -1,5 +1,6 @@
 package GUI;
 
+import back_end_classes.DatabaseHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,8 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        DatabaseHelper.initializeDatabase();
+        DatabaseHelper.loadFromSQLite();
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Launch.fxml")));
 
         Scene scene = new Scene(root, 900, 600);
