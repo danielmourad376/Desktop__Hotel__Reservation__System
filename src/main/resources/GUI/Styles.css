@@ -48,16 +48,22 @@
 
 .secondary-button {
     -fx-background-color: transparent;
-    -fx-border-color: #B0B8C8;
+    -fx-border-color: #6C757D;
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
-    -fx-text-fill: #B0B8C8;
+    -fx-text-fill: #6C757D;
     -fx-font-size: 14px;
     -fx-cursor: hand;
+    -fx-padding: 5px 15px;
 }
 .secondary-button:hover {
-    -fx-background-color: rgba(176, 184, 200, 0.1);
-    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #6C757D;
+    -fx-text-fill: white;
+}
+
+.secondary-button:pressed {
+    -fx-background-color: #5A6268;
+    -fx-border-color: #5A6268;
 }
 
 .nav-bar {
